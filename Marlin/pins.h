@@ -454,7 +454,7 @@
     #define Z_DIR_PIN          48
     #define Z_ENABLE_PIN       62
     #define Z_MIN_PIN          18 // autolevel for deltabot
-    #define Z_MAX_PIN          19
+    #define Z_MAX_PIN          14 //Was pin 19. using Y_MIN_PIN and leave pin 18 and 19 for LED-Ring control interface
 
     #define Y2_STEP_PIN        36
     #define Y2_DIR_PIN         34
