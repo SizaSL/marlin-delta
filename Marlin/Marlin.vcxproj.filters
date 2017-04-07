@@ -16,7 +16,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Marlin.ino" />
-    <None Include="Marlin.pde" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BlinkM.cpp">
@@ -193,6 +192,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="__vm\.Marlin.vsarduino.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Visual Micro\.Marlin.vsarduino.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

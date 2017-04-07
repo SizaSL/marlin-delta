@@ -66,8 +66,9 @@
       <SDLCheck>true</SDLCheck>
       <ForcedIncludeFiles>$(ProjectDir)__vm\.Marlin.vsarduino.h;%(ForcedIncludeFiles)</ForcedIncludeFiles>
       <WholeProgramOptimization>false</WholeProgramOptimization>
-      <PreprocessorDefinitions>__AVR_ATmega2560__;F_CPU=16000000L;ARDUINO=10801;ARDUINO_AVR_MEGA2560;ARDUINO_ARCH_AVR;__cplusplus=201103L;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(ProjectDir)..\..\..\Program Files (x86)\Arduino\libraries\LiquidCrystal\src;$(ProjectDir)..\..\..\Users\Siza\Documents\Arduino\libraries\U8glib\src;$(ProjectDir)..\..\..\Users\Siza\AppData\Local\arduino15\packages\arduino\hardware\avr\1.6.18\libraries\SPI\src;$(ProjectDir)..\..\..\Users\Siza\AppData\Local\arduino15\packages\arduino\hardware\avr\1.6.18\libraries\Wire\src;$(ProjectDir)..\..\..\Users\Siza\AppData\Local\arduino15\packages\arduino\hardware\avr\1.6.18\libraries\Wire\src\utility;$(ProjectDir)..\..\..\Program Files (x86)\Arduino\libraries;$(ProjectDir)..\..\..\Users\Siza\AppData\Local\arduino15\packages\arduino\hardware\avr\1.6.18\libraries;$(ProjectDir)..\..\..\Users\Siza\Documents\Arduino\libraries;$(ProjectDir)..\..\..\Users\Siza\AppData\Local\arduino15\packages\arduino\hardware\avr\1.6.18\cores\arduino;$(ProjectDir)..\..\..\Users\Siza\AppData\Local\arduino15\packages\arduino\hardware\avr\1.6.18\variants\mega;$(ProjectDir)..\Marlin;$(ProjectDir)..\..\..\Users\Siza\AppData\Local\arduino15\packages\arduino\tools\avr-gcc\4.9.2-atmel3.5.4-arduino2\avr\include\;$(ProjectDir)..\..\..\Users\Siza\AppData\Local\arduino15\packages\arduino\tools\avr-gcc\4.9.2-atmel3.5.4-arduino2\avr\include\avr\;$(ProjectDir)..\..\..\Users\Siza\AppData\Local\arduino15\packages\arduino\tools\avr-gcc\4.9.2-atmel3.5.4-arduino2\lib\gcc\avr\4.8.1\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>__AVR_ATmega2560__;F_CPU=16000000L;ARDUINO=10802;ARDUINO_AVR_MEGA2560;ARDUINO_ARCH_AVR;__cplusplus=201103L;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\..\..\Program Files (x86)\Arduino\libraries\U8glib;$(ProjectDir)..\..\..\Program Files (x86)\Arduino\libraries\LiquidCrystal\src;$(ProjectDir)..\..\..\Program Files (x86)\Arduino\libraries\U8glib\utility;$(ProjectDir)..\..\..\Program Files (x86)\Arduino\libraries;$(ProjectDir)..\..\..\Program Files (x86)\Arduino\hardware\arduino\avr\libraries;$(ProjectDir)..\..\..\Users\SZ\Documents\Arduino\libraries;$(ProjectDir)..\..\..\Program Files (x86)\Arduino\hardware\arduino\avr\cores\arduino;$(ProjectDir)..\..\..\Program Files (x86)\Arduino\hardware\arduino\avr\variants\mega;$(ProjectDir)..\Marlin;$(ProjectDir)..\..\..\Program Files (x86)\Arduino\hardware\tools\avr\avr\include\;$(ProjectDir)..\..\..\Program Files (x86)\Arduino\hardware\tools\avr\avr\include\avr\;$(ProjectDir)..\..\..\Program Files (x86)\Arduino\hardware\tools\avr\lib\gcc\avr\4.8.1\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <IgnoreStandardIncludePath>false</IgnoreStandardIncludePath>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -80,9 +81,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Marlin.ino">
-      <FileType>CppCode</FileType>
-    </None>
-    <None Include="Marlin.pde">
       <FileType>CppCode</FileType>
     </None>
   </ItemGroup>
@@ -215,6 +213,7 @@
     <ClInclude Include="vector_3.h">
       <FileType>CppCode</FileType>
     </ClInclude>
+    <ClInclude Include="Visual Micro\.Marlin.vsarduino.h" />
     <ClInclude Include="watchdog.h">
       <FileType>CppCode</FileType>
     </ClInclude>

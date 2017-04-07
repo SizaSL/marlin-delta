@@ -1,4 +1,5 @@
 #include <U8glib.h>
+#include <Arduino.h>
 
 /* -*- c++ -*- */
 
@@ -43,11 +44,6 @@ void Serial1_println(char* s)
 {
 	Serial1.println(s);
 }
-void Serial1_write(byte chr)
-{
-	Serial1.write(chr);
-}
-
 #ifdef ULTRA_LCD
   #if defined(LCD_I2C_TYPE_PCF8575)
     #include <Wire.h>
