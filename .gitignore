@@ -4,3 +4,5 @@ applet/
 *.orig
 *.rej
 *.bak
+Marlin/[Rr]elease*/
+Marlin/[Dd]ebug*/

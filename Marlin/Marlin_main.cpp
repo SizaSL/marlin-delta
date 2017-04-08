@@ -306,10 +306,6 @@ bool target_direction;
 //=============================ROUTINES=============================
 //===========================================================================
 
-
-void Serial1_begin(int baud);
-void Serial1_println(char* s);
-
 void get_arc_coordinates();
 bool setTargetedHotend(int code);
 
@@ -449,7 +445,10 @@ void setup()
   setup_killpin();
   setup_powerhold();
   MYSERIAL.begin(BAUDRATE);
-  Serial1_begin(9600);
+#ifdef LED_RING
+  LEDSERIAL.begin(BAUDRATE);
+#endif // LED_RING
+
   SERIAL_PROTOCOLLNPGM("start");
   SERIAL_ECHO_START;
 
@@ -2282,12 +2281,17 @@ void process_commands()
 	case 115: // M115
 	  SERIAL_PROTOCOLPGM(MSG_M115_REPORT);
 	  break;
-	case 117: // M117 display message
+#ifdef LED_RING
+	case 116: //LED-Ring
+		LED_SERIAL_PROTOCOL(cmdbuffer[bufindr] + 5);
+		break;
+#endif // LED_RING
+
+	case 117: // M117 display message	  
 	  starpos = (strchr(strchr_pointer + 5,'*'));
 	  if(starpos!=NULL)
 		*(starpos-1)='\0';
-	  lcd_setstatus(strchr_pointer + 5);
-	  Serial1_println(strchr_pointer);
+	  lcd_setstatus(strchr_pointer + 5);	  
 	  break;
 	case 114: // M114
 	  SERIAL_PROTOCOLPGM("X:");

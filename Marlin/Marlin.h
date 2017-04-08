@@ -39,6 +39,9 @@
 #endif
 
 #include "MarlinSerial.h"
+#ifdef LED_RING
+#include "MarlinLedRingSerial.h"
+#endif
 
 #ifndef cbi
 #define cbi(sfr, bit) (_SFR_BYTE(sfr) &= ~_BV(bit))
@@ -51,12 +54,15 @@
 
 #ifdef AT90USB
    #ifdef BTENABLED
-         #define MYSERIAL bt
+		 #define MYSERIAL bt
    #else
-         #define MYSERIAL Serial
+		 #define MYSERIAL Serial
    #endif // BTENABLED
 #else
   #define MYSERIAL MSerial
+  #ifdef LED_RING
+	#define LEDSERIAL LEDSerial
+  #endif
 #endif
 
 #define SERIAL_PROTOCOL(x) (MYSERIAL.print(x))
@@ -64,6 +70,15 @@
 #define SERIAL_PROTOCOLPGM(x) (serialprintPGM(PSTR(x)))
 #define SERIAL_PROTOCOLLN(x) (MYSERIAL.print(x),MYSERIAL.write('\n'))
 #define SERIAL_PROTOCOLLNPGM(x) (serialprintPGM(PSTR(x)),MYSERIAL.write('\n'))
+
+#ifdef LED_RING
+#define LED_SERIAL_PROTOCOL(x) (LEDSERIAL.print(x))
+#define LED_SERIAL_PROTOCOL_F(x,y) (LEDSERIAL.print(x,y))
+#define LED_SERIAL_PROTOCOLPGM(x) (ledserialprintPGM(PSTR(x)))
+#define LED_SERIAL_PROTOCOLLN(x) (LEDSERIAL.print(x),LEDSERIAL.write('\n'))
+#define LED_SERIAL_PROTOCOLLNPGM(x) (ledserialprintPGM(PSTR(x)),LEDSERIAL.write('\n'))  
+#endif // LED_RING
+
 
 
 const char errormagic[] PROGMEM ="Error:";
@@ -93,10 +108,23 @@ FORCE_INLINE void serialprintPGM(const char *str)
   char ch=pgm_read_byte(str);
   while(ch)
   {
-    MYSERIAL.write(ch);
-    ch=pgm_read_byte(++str);
+	MYSERIAL.write(ch);
+	ch=pgm_read_byte(++str);
   }
 }
+
+#ifdef LED_RING
+FORCE_INLINE void ledserialprintPGM(const char *str)
+{
+	char ch = pgm_read_byte(str);
+	while (ch)
+	{
+		LEDSERIAL.write(ch);
+		ch = pgm_read_byte(++str);
+	}
+}
+#endif // LED_RING
+
 
 
 void get_command();
@@ -105,7 +133,7 @@ void process_commands();
 void manage_inactivity();
 
 #if defined(DUAL_X_CARRIAGE) && defined(X_ENABLE_PIN) && X_ENABLE_PIN > -1 \
-    && defined(X2_ENABLE_PIN) && X2_ENABLE_PIN > -1
+	&& defined(X2_ENABLE_PIN) && X2_ENABLE_PIN > -1
   #define  enable_x() do { WRITE(X_ENABLE_PIN, X_ENABLE_ON); WRITE(X2_ENABLE_PIN, X_ENABLE_ON); } while (0)
   #define disable_x() do { WRITE(X_ENABLE_PIN,!X_ENABLE_ON); WRITE(X2_ENABLE_PIN,!X_ENABLE_ON); axis_known_position[X_AXIS] = false; } while (0)
 #elif defined(X_ENABLE_PIN) && X_ENABLE_PIN > -1
@@ -118,11 +146,11 @@ void manage_inactivity();
 
 #if defined(Y_ENABLE_PIN) && Y_ENABLE_PIN > -1
   #ifdef Y_DUAL_STEPPER_DRIVERS
-    #define  enable_y() { WRITE(Y_ENABLE_PIN, Y_ENABLE_ON); WRITE(Y2_ENABLE_PIN,  Y_ENABLE_ON); }
-    #define disable_y() { WRITE(Y_ENABLE_PIN,!Y_ENABLE_ON); WRITE(Y2_ENABLE_PIN, !Y_ENABLE_ON); axis_known_position[Y_AXIS] = false; }
+	#define  enable_y() { WRITE(Y_ENABLE_PIN, Y_ENABLE_ON); WRITE(Y2_ENABLE_PIN,  Y_ENABLE_ON); }
+	#define disable_y() { WRITE(Y_ENABLE_PIN,!Y_ENABLE_ON); WRITE(Y2_ENABLE_PIN, !Y_ENABLE_ON); axis_known_position[Y_AXIS] = false; }
   #else
-    #define  enable_y() WRITE(Y_ENABLE_PIN, Y_ENABLE_ON)
-    #define disable_y() { WRITE(Y_ENABLE_PIN,!Y_ENABLE_ON); axis_known_position[Y_AXIS] = false; }
+	#define  enable_y() WRITE(Y_ENABLE_PIN, Y_ENABLE_ON)
+	#define disable_y() { WRITE(Y_ENABLE_PIN,!Y_ENABLE_ON); axis_known_position[Y_AXIS] = false; }
   #endif
 #else
   #define enable_y() ;
@@ -131,11 +159,11 @@ void manage_inactivity();
 
 #if defined(Z_ENABLE_PIN) && Z_ENABLE_PIN > -1
   #ifdef Z_DUAL_STEPPER_DRIVERS
-    #define  enable_z() { WRITE(Z_ENABLE_PIN, Z_ENABLE_ON); WRITE(Z2_ENABLE_PIN, Z_ENABLE_ON); }
-    #define disable_z() { WRITE(Z_ENABLE_PIN,!Z_ENABLE_ON); WRITE(Z2_ENABLE_PIN,!Z_ENABLE_ON); axis_known_position[Z_AXIS] = false; }
+	#define  enable_z() { WRITE(Z_ENABLE_PIN, Z_ENABLE_ON); WRITE(Z2_ENABLE_PIN, Z_ENABLE_ON); }
+	#define disable_z() { WRITE(Z_ENABLE_PIN,!Z_ENABLE_ON); WRITE(Z2_ENABLE_PIN,!Z_ENABLE_ON); axis_known_position[Z_AXIS] = false; }
   #else
-    #define  enable_z() WRITE(Z_ENABLE_PIN, Z_ENABLE_ON)
-    #define disable_z() { WRITE(Z_ENABLE_PIN,!Z_ENABLE_ON); axis_known_position[Z_AXIS] = false; }
+	#define  enable_z() WRITE(Z_ENABLE_PIN, Z_ENABLE_ON)
+	#define disable_z() { WRITE(Z_ENABLE_PIN,!Z_ENABLE_ON); axis_known_position[Z_AXIS] = false; }
   #endif
 #else
   #define enable_z() ;

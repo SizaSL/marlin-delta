@@ -1,5 +1,4 @@
 #include <U8glib.h>
-#include <Arduino.h>
 
 /* -*- c++ -*- */
 
@@ -36,14 +35,6 @@
 #include "Configuration.h"
 #include "pins.h"
 
-void Serial1_begin(int baud)
-{
-	Serial1.begin(baud);
-}
-void Serial1_println(char* s)
-{
-	Serial1.println(s);
-}
 #ifdef ULTRA_LCD
   #if defined(LCD_I2C_TYPE_PCF8575)
     #include <Wire.h>
