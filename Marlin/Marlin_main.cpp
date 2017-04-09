@@ -445,12 +445,6 @@ void setup()
   setup_killpin();
   setup_powerhold();
   MYSERIAL.begin(BAUDRATE);
-#ifdef LED_RING
-  SET_OUTPUT(LED_RING_RST_PIN);
-  WRITE(LED_RING_RST_PIN, HIGH);
-  LEDSERIAL.begin(BAUDRATE);
-#endif // LED_RING
-
   SERIAL_PROTOCOLLNPGM("start");
   SERIAL_ECHO_START;
 
@@ -506,6 +500,17 @@ void setup()
   #ifdef DIGIPOT_I2C
 	digipot_i2c_init();
   #endif
+
+
+  #ifdef LED_RING
+	SET_OUTPUT(LED_RING_RST_PIN);
+	WRITE(LED_RING_RST_PIN, HIGH);
+	LEDSERIAL.begin(BAUDRATE);
+	if (Mode == PASS_THROUGH)
+	{
+		LEDSERIAL.reset();
+	}
+  #endif // LED_RING
 }
 
 
@@ -2319,6 +2324,7 @@ void process_commands()
 		//Run some pattern on led for visual indication
 		LEDSERIAL.reset();
 		Mode = PASS_THROUGH;
+		Config_StoreSettings();
 		//Enter pass-through mode
 		break;
 #endif // LED_RING

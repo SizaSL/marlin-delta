@@ -86,6 +86,10 @@ void Config_StoreSettings()
     int lcd_contrast = 32;
   #endif
   EEPROM_WRITE_VAR(i,lcd_contrast);
+  #ifndef LED_RING
+    byte Mode = RUNNING;
+  #endif
+	EEPROM_WRITE_VAR(i, Mode);
   char ver2[4]=EEPROM_VERSION;
   i=EEPROM_OFFSET;
   EEPROM_WRITE_VAR(i,ver2); // validate data
@@ -98,6 +102,14 @@ void Config_StoreSettings()
 #ifndef DISABLE_M503
 void Config_PrintSettings()
 {  // Always have this function, even with EEPROM_SETTINGS disabled, the current values will be shown
+	SERIAL_ECHO_START;
+#ifdef LED_RING
+	SERIAL_ECHO("Mode: ");
+	if(Mode == PASS_THROUGH)
+		SERIAL_ECHOLNPGM("PASS-THROUGH Mode");
+	if (Mode == RUNNING)
+		SERIAL_ECHOLNPGM("RUNNING Mode");
+#endif
     SERIAL_ECHO_START;
     SERIAL_ECHOLNPGM("Steps per unit:");
     SERIAL_ECHO_START;
@@ -223,7 +235,9 @@ void Config_RetrieveSettings()
         int lcd_contrast;
         #endif
         EEPROM_READ_VAR(i,lcd_contrast);
-
+#ifdef LED_RING
+		EEPROM_READ_VAR(i, Mode);
+#endif
 		// Call updatePID (similar to when we have processed M301)
 		updatePID();
         SERIAL_ECHO_START;
