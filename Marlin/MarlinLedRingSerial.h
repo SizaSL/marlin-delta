@@ -38,6 +38,13 @@ Modified 8 April 2017 by Siza SL
 #define LED_SERIAL_PORT 1
 #endif
 
+#if !defined(LED_RING_RST_PIN)
+#define PS_ON_PIN	-1
+#define LED_RING_RST_PIN	12
+#define LED_RING_DELAY_B4_RST	1000 //1 secs
+#define LED_RING_DELAY_AFT_RST	3000 //1 secs
+#endif
+
 #ifndef DEC
 #define DEC 10
 #endif
@@ -111,6 +118,7 @@ public:
 	int peek(void);
 	int read(void);
 	void flush(void);
+	void reset(void);
 
 	FORCE_INLINE int available(void)
 	{
@@ -196,6 +204,10 @@ public:
 };
 
 extern MarlinLEDSerial LEDSerial;
+extern boolean Mode;
+#define RUNNING 0
+#define PASS_THROUGH 1
+#define ECHO_ON
 #endif // !teensylu
 
 #endif
