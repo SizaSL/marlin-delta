@@ -240,16 +240,16 @@ void Config_RetrieveSettings()
 #endif
 		// Call updatePID (similar to when we have processed M301)
 		updatePID();
-        SERIAL_ECHO_START;
-        SERIAL_ECHOLNPGM("Stored settings retrieved");
+        /*SERIAL_ECHO_START;
+        SERIAL_ECHOLNPGM("Stored settings retrieved");*/
     }
     else
     {
         Config_ResetDefault();
     }
-    #ifdef EEPROM_CHITCHAT
+    /*#ifdef EEPROM_CHITCHAT
       Config_PrintSettings();
-    #endif
+    #endif*/
 }
 #endif
 

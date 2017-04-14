@@ -149,10 +149,9 @@ void MarlinLEDSerial::flush()
 }
 
 void MarlinLEDSerial::reset(void)
-{
-	delay(LED_RING_DELAY_B4_RST);
+{	
 	digitalWrite(LED_RING_RST_PIN, LOW);
-	delay(LED_RING_DELAY_AFT_RST);
+	delayMicroseconds(250 * 1000);
 	digitalWrite(LED_RING_RST_PIN, HIGH);
 }
 

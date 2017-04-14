@@ -442,82 +442,112 @@ void servo_init()
 
 void setup()
 {
-  setup_killpin();
-  setup_powerhold();
-  MYSERIAL.begin(BAUDRATE);
-  SERIAL_PROTOCOLLNPGM("start");
-  SERIAL_ECHO_START;
+	setup_killpin();
+	// loads data from EEPROM if available else uses defaults (and resets step acceleration rate)
+	Config_RetrieveSettings();
 
-  // Check startup - does nothing if bootloader sets MCUSR to 0
-  byte mcu = MCUSR;
-  if(mcu & 1) SERIAL_ECHOLNPGM(MSG_POWERUP);
-  if(mcu & 2) SERIAL_ECHOLNPGM(MSG_EXTERNAL_RESET);
-  if(mcu & 4) SERIAL_ECHOLNPGM(MSG_BROWNOUT_RESET);
-  if(mcu & 8) SERIAL_ECHOLNPGM(MSG_WATCHDOG_RESET);
-  if(mcu & 32) SERIAL_ECHOLNPGM(MSG_SOFTWARE_RESET);
-  MCUSR=0;
-
-  SERIAL_ECHOPGM(MSG_MARLIN);
-  SERIAL_ECHOLNPGM(VERSION_STRING);
-  #ifdef STRING_VERSION_CONFIG_H
-	#ifdef STRING_CONFIG_H_AUTHOR
-	  SERIAL_ECHO_START;
-	  SERIAL_ECHOPGM(MSG_CONFIGURATION_VER);
-	  SERIAL_ECHOPGM(STRING_VERSION_CONFIG_H);
-	  SERIAL_ECHOPGM(MSG_AUTHOR);
-	  SERIAL_ECHOLNPGM(STRING_CONFIG_H_AUTHOR);
-	  SERIAL_ECHOPGM("Compiled: ");
-	  SERIAL_ECHOLNPGM(__DATE__);
-	#endif
-  #endif
-  SERIAL_ECHO_START;
-  SERIAL_ECHOPGM(MSG_FREE_MEMORY);
-  SERIAL_ECHO(freeMemory());
-  SERIAL_ECHOPGM(MSG_PLANNER_BUFFER_BYTES);
-  SERIAL_ECHOLN((int)sizeof(block_t)*BLOCK_BUFFER_SIZE);
-  for(int8_t i = 0; i < BUFSIZE; i++)
-  {
-	fromsd[i] = false;
-  }
-
-  // loads data from EEPROM if available else uses defaults (and resets step acceleration rate)
-  Config_RetrieveSettings();
-
-  tp_init();    // Initialize temperature loop
-  plan_init();  // Initialize planner;
-  watchdog_init();
-  st_init();    // Initialize stepper, this enables interrupts!
-  setup_photpin();
-  servo_init();
-
-  lcd_init();
-  _delay_ms(1000);	// wait 1sec to display the splash screen
-
-  #if defined(CONTROLLERFAN_PIN) && CONTROLLERFAN_PIN > -1
-	SET_OUTPUT(CONTROLLERFAN_PIN); //Set pin used for driver cooling fan
-  #endif
-
-  #ifdef DIGIPOT_I2C
-	digipot_i2c_init();
-  #endif
-
-
-  #ifdef LED_RING
-	SET_OUTPUT(LED_RING_RST_PIN);
-	WRITE(LED_RING_RST_PIN, HIGH);
-	LEDSERIAL.begin(BAUDRATE);
+#ifdef LED_RING	
 	if (Mode == PASS_THROUGH)
 	{
-		LEDSERIAL.reset();
+		SET_OUTPUT(LED_RING_RST_PIN);
+		WRITE(LED_RING_RST_PIN, LOW);
+		MYSERIAL.begin(PROGRAMMING_BAUDRATE);
+		LEDSERIAL.begin(PROGRAMMING_BAUDRATE);	
+		//LEDSERIAL.reset();
 	}
-  #endif // LED_RING
+	else
+	{
+#endif // LED_RING
+
+		//setup_killpin();
+		setup_powerhold();
+		MYSERIAL.begin(BAUDRATE);
+		SERIAL_PROTOCOLLNPGM("start");
+		SERIAL_ECHO_START;
+
+		// Check startup - does nothing if bootloader sets MCUSR to 0
+		byte mcu = MCUSR;
+		if (mcu & 1) SERIAL_ECHOLNPGM(MSG_POWERUP);
+		if (mcu & 2) SERIAL_ECHOLNPGM(MSG_EXTERNAL_RESET);
+		if (mcu & 4) SERIAL_ECHOLNPGM(MSG_BROWNOUT_RESET);
+		if (mcu & 8) SERIAL_ECHOLNPGM(MSG_WATCHDOG_RESET);
+		if (mcu & 32) SERIAL_ECHOLNPGM(MSG_SOFTWARE_RESET);
+		MCUSR = 0;
+
+		SERIAL_ECHOPGM(MSG_MARLIN);
+		SERIAL_ECHOLNPGM(VERSION_STRING);
+#ifdef STRING_VERSION_CONFIG_H
+#ifdef STRING_CONFIG_H_AUTHOR
+		SERIAL_ECHO_START;
+		SERIAL_ECHOPGM(MSG_CONFIGURATION_VER);
+		SERIAL_ECHOPGM(STRING_VERSION_CONFIG_H);
+		SERIAL_ECHOPGM(MSG_AUTHOR);
+		SERIAL_ECHOLNPGM(STRING_CONFIG_H_AUTHOR);
+		SERIAL_ECHOPGM("Compiled: ");
+		SERIAL_ECHOLNPGM(__DATE__);
+#endif
+#endif
+		SERIAL_ECHO_START;
+		SERIAL_ECHOPGM(MSG_FREE_MEMORY);
+		SERIAL_ECHO(freeMemory());
+		SERIAL_ECHOPGM(MSG_PLANNER_BUFFER_BYTES);
+		SERIAL_ECHOLN((int)sizeof(block_t)*BLOCK_BUFFER_SIZE);
+		for (int8_t i = 0; i < BUFSIZE; i++)
+		{
+			fromsd[i] = false;
+		}
+
+		// loads data from EEPROM if available else uses defaults (and resets step acceleration rate)
+		//Config_RetrieveSettings();
+
+		tp_init();    // Initialize temperature loop
+		plan_init();  // Initialize planner;
+		watchdog_init();
+		st_init();    // Initialize stepper, this enables interrupts!
+		setup_photpin();
+		servo_init();
+
+		lcd_init();
+		_delay_ms(1000);	// wait 1sec to display the splash screen
+
+#if defined(CONTROLLERFAN_PIN) && CONTROLLERFAN_PIN > -1
+		SET_OUTPUT(CONTROLLERFAN_PIN); //Set pin used for driver cooling fan
+#endif
+
+#ifdef DIGIPOT_I2C
+		digipot_i2c_init();
+#endif
+
+		//	// loads data from EEPROM if available else uses defaults (and resets step acceleration rate)
+		//	Config_RetrieveSettings();
+		//
+		//#ifdef LED_RING
+		//	SET_OUTPUT(LED_RING_RST_PIN);
+		//	WRITE(LED_RING_RST_PIN, HIGH);
+		//	if (Mode == PASS_THROUGH)
+		//	{
+		//		MYSERIAL.flush();
+		//		MYSERIAL.begin(PROGRAMMING_BAUDRATE);
+		//		LEDSERIAL.begin(PROGRAMMING_BAUDRATE);
+		//		LEDSERIAL.reset();
+		//	}
+		//	else
+		//	{
+		//		LEDSERIAL.begin(BAUDRATE);
+		//		LEDSERIAL.reset();
+		//	}
+		//#endif // LED_RING
+#ifdef LED_RING
+	}
+#endif
 }
 
 
 void loop()
 {
-  if(buflen < (BUFSIZE-1))
-	get_command();
+	if (buflen < (BUFSIZE - 1)) {
+		get_command();
+	}
   #ifdef SDSUPPORT
   card.checkautostart(false);
   #endif
@@ -568,6 +598,9 @@ void get_command()
 	{
 		while (MYSERIAL.available() || LEDSERIAL.available() > 0 && buflen < BUFSIZE)
 		{
+
+			SET_OUTPUT(LED_RING_RST_PIN);
+			WRITE(LED_RING_RST_PIN, HIGH);
 			if (MYSERIAL.available())
 			{
 				serial_char = MYSERIAL.read();

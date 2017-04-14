@@ -207,7 +207,8 @@ extern MarlinLEDSerial LEDSerial;
 extern boolean Mode;
 #define RUNNING 0
 #define PASS_THROUGH 1
-#define ECHO_ON
+#define PROGRAMMING_BAUDRATE 57600
+//#define ECHO_ON
 #endif // !teensylu
 
 #endif
