@@ -118,7 +118,6 @@ public:
 	int peek(void);
 	int read(void);
 	void flush(void);
-	void reset(void);
 
 	FORCE_INLINE int available(void)
 	{
@@ -204,10 +203,6 @@ public:
 };
 
 extern MarlinLEDSerial LEDSerial;
-extern boolean Mode;
-#define RUNNING 0
-#define PASS_THROUGH 1
-#define PROGRAMMING_BAUDRATE 57600
 //#define ECHO_ON
 #endif // !teensylu
 

@@ -148,16 +148,6 @@ void MarlinLEDSerial::flush()
 	led_rx_buffer.head = led_rx_buffer.tail;
 }
 
-void MarlinLEDSerial::reset(void)
-{	
-	digitalWrite(LED_RING_RST_PIN, LOW);
-	delayMicroseconds(250 * 1000);
-	digitalWrite(LED_RING_RST_PIN, HIGH);
-}
-
-
-
-
 /// imports from print.h
 
 
@@ -331,7 +321,6 @@ void MarlinLEDSerial::printFloat(double number, uint8_t digits)
 
 // Preinstantiate Objects //////////////////////////////////////////////////////
 MarlinLEDSerial LEDSerial;
-boolean Mode;
 
 #endif // port check
 #endif //teensylu
