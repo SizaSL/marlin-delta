@@ -445,6 +445,7 @@ void setup()
 	setup_killpin();
 	setup_powerhold();
 	MYSERIAL.begin(BAUDRATE);
+	LEDSERIAL.begin(BAUDRATE);
 	SERIAL_PROTOCOLLNPGM("start");
 	SERIAL_ECHO_START;
 
@@ -2282,15 +2283,7 @@ void process_commands()
 	  break;
 #ifdef LED_RING
 	case 116: //LED-Ring
-		//Need python script for entering programming mode!!!
-		//LED_SERIAL_PROTOCOL(cmdbuffer[bufindr] + 5);
-		//Run some pattern on led for visual indication
-		SERIAL_PROTOCOLLNPGM("Entered PASS-THROUGH mode");
-		MYSERIAL.flush();
-		//MYSERIAL.begin(PROGRAMMING_BAUDRATE);
-		//LEDSERIAL.begin(PROGRAMMING_BAUDRATE);
-		//Config_StoreSettings();
-		//Enter pass-through mode
+		LED_SERIAL_PROTOCOL(cmdbuffer[bufindr] + 5);
 		break;
 #endif // LED_RING
 
