@@ -25,13 +25,6 @@ Modified 8 April 2017 by Siza SL
 #ifndef _MARLINLEDRINGSERIAL_h
 #define _MARLINLEDRINGSERIAL_h
 
-#if defined(ARDUINO) && ARDUINO >= 100
-	#include "arduino.h"
-#else
-	#include "WProgram.h"
-#endif
-
-
 #include "Marlin.h"
 
 #if !defined(LED_SERIAL_PORT)
