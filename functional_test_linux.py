@@ -12,10 +12,8 @@ try:
 	serial_port.isOpen()
 	time.sleep(5)
 	serial_port.write("M116 a\r")
+	time.sleep(5)
 	serial_port.write("M116 s\r")
-	serial_port.write("M116 d\r")
-	serial_port.write("M116 f\r")
-	time.sleep(3)
 	serial_port.close()
 except StopIteration:
 	print("No Arduino device connected")
